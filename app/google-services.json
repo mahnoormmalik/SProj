@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "289162020233",
+    "firebase_url": "https://sproj-2ca67.firebaseio.com",
+    "project_id": "sproj-2ca67",
+    "storage_bucket": "sproj-2ca67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289162020233:android:63a90809cb8d7bf9",
+        "android_client_info": {
+          "package_name": "com.example.sproj.sproj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289162020233-gngjg6dllmuvphe0n924vdvd12ku8tsa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvXg7pQ62LWlp2i_677ToxH7Qiba4WlU0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
