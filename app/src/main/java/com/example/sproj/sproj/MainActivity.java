@@ -40,16 +40,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        final MediaPlayer waterMP = MediaPlayer.create(this, R.raw.paani);
-
-        ImageButton waterSound = (ImageButton) this.findViewById(R.id.image1);
-
-        waterSound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                waterMP.start();
-            }
-        });
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         super.onCreate(savedInstanceState);
@@ -66,6 +56,18 @@ public class MainActivity extends AppCompatActivity {
 //                .using(new FirebaseImageLoader())
 //                .load(mStorageRef)
 //                .into(image);
+
+        final MediaPlayer waterMP = MediaPlayer.create(this, R.raw.paani);
+
+        ImageButton waterSound = (ImageButton) this.findViewById(R.id.image1);
+
+        waterSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                waterMP.start();
+            }
+        });
+
         if (user != null) {
             user.reload();
             Toast.makeText(MainActivity.this, "user signed in.",
