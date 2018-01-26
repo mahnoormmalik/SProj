@@ -4,12 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
+        final MediaPlayer waterMP = MediaPlayer.create(this, R.raw.paani);
+
+        ImageButton waterSound = (ImageButton) this.findViewById(R.id.image1);
+
+        waterSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                waterMP.start();
+            }
+        });
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         super.onCreate(savedInstanceState);
