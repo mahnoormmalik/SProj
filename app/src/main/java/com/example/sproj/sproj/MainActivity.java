@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 //                .load(mStorageRef)
 //                .into(image);
 
-        // Sound code hereee
+        // Sound code here
         final MediaPlayer waterMP = MediaPlayer.create(this, R.raw.paani);
 
         ImageButton waterSound = (ImageButton) this.findViewById(R.id.image1);
