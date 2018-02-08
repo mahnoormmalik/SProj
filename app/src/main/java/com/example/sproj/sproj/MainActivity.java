@@ -1,5 +1,6 @@
 package com.example.sproj.sproj;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -135,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Intent intent = new Intent(this,StudentListFragment.class);
+        startActivity(intent);
 
 
     }
