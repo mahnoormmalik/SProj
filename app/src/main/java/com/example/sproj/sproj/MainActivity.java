@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -16,6 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.estimote.cloud_plugin.common.EstimoteCloudCredentials;
+import com.estimote.internal_plugins_api.cloud.CloudCredentials;
+import com.estimote.internal_plugins_api.cloud.proximity.ProximityAttachment;
+import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement;
+import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory;
+import com.estimote.proximity_sdk.proximity.ProximityObserver;
+import com.estimote.proximity_sdk.proximity.ProximityObserverBuilder;
+import com.estimote.proximity_sdk.proximity.ProximityZone;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +38,11 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,16 +50,128 @@ public class MainActivity extends AppCompatActivity {
     ImageView image;
     FirebaseAuth mAuth;
     FirebaseUser user;
+
+    private ProximityObserver proximityObserver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-
-
-        mStorageRef = FirebaseStorage.getInstance().getReference();
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+        EstimoteCloudCredentials cloudCredentials = new EstimoteCloudCredentials("aimengaba-gmail-com-s-your-2ft","f8176d44e4b225178f02cc7f524a6f0f");
+
+        //Proximity Observer
+        proximityObserver =
+                new ProximityObserverBuilder(getApplicationContext(), cloudCredentials)
+                        .withOnErrorAction(new Function1<Throwable, Unit>() {
+                            @Override
+                            public Unit invoke(Throwable throwable) {
+                                Log.e("app", "proximity observer error: " + throwable);
+                                return null;
+                            }
+                        })
+                        .withBalancedPowerMode()
+                        .build();
+
+        ProximityZone zone1 = proximityObserver.zoneBuilder()
+                .forAttachmentKeyAndValue("floor", "1st")
+                .inCustomRange(1)
+                .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Toast.makeText(MainActivity.this, "bluetooth beacon detected",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("app", "Welcome to the 1st floor");
+                        return null;
+                    }
+                })
+                .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Log.d("app", "Bye bye, come visit us again on the 1st floor");
+                        Toast.makeText(MainActivity.this, "bluetooth beacon left",
+                                Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+                })
+                .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
+                    @Override
+                    public Unit invoke(List<? extends ProximityAttachment> proximityAttachments) {
+                            /* Do something here */
+                        return null;
+                    }
+                })
+                .create();
+        ProximityObserver.Handler observationHandler =
+                proximityObserver
+                        .addProximityZone(zone1)
+                        .start();
+//        this.proximityObserver.addProximityZone(zone1);
+
+        ProximityZone mint = proximityObserver.zoneBuilder()
+                .forAttachmentKeyAndValue("desk", "mint")
+                .inCustomRange(1)
+                .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Toast.makeText(MainActivity.this, "Welcome to blueberry desk",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("app", "Welcome to blueberry desk");
+                        return null;
+                    }
+                })
+                .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Log.d("app", "Bye bye, come visit us again on the blueberry desk");
+                        Toast.makeText(MainActivity.this, "Bye bye from blueberry desk",
+                                Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+                })
+                .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
+                    @Override
+                    public Unit invoke(List<? extends ProximityAttachment> proximityAttachments) {
+                            /* Do something here */
+                        return null;
+                    }
+                })
+                .create();
+        ProximityObserver.Handler observationHandler1 =
+                proximityObserver
+                        .addProximityZone(mint)
+                        .start();
+
+        RequirementsWizardFactory
+                .createEstimoteRequirementsWizard()
+                .fulfillRequirements(getApplicationContext(),
+                        // onRequirementsFulfilled
+                        new Function0<Unit>() {
+                            @Override public Unit invoke() {
+                                Log.d("app", "requirements fulfilled");
+                                proximityObserver.start();
+                                return null;
+                            }
+                        },
+                        // onRequirementsMissing
+                        new Function1<List<? extends Requirement>, Unit>() {
+                            @Override public Unit invoke(List<? extends Requirement> requirements) {
+                                Log.e("app", "requirements missing: " + requirements);
+                                return null;
+                            }
+                        },
+                        // onError
+                        new Function1<Throwable, Unit>() {
+                            @Override public Unit invoke(Throwable throwable) {
+                                Log.e("app", "requirements error: " + throwable);
+                                return null;
+                            }
+                        });
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
         TextView myTextView = (TextView) findViewById(R.id.textView);
         Typeface typeface = Typeface.createFromAsset(getAssets(), "Fonts/TitilliumWeb-Black.ttf");
         image = (ImageView)findViewById(R.id.imagedb);
@@ -136,8 +262,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Intent intent = new Intent(this,StudentListFragment.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this,StudentListFragment.class);
+//        startActivity(intent);
 
 
     }
