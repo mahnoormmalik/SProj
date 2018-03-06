@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         RequirementsWizardFactory
                 .createEstimoteRequirementsWizard()
-                .fulfillRequirements(getApplicationContext(),
+                .fulfillRequirements(MainActivity.this,
                         // onRequirementsFulfilled
                         new Function0<Unit>() {
                             @Override public Unit invoke() {
