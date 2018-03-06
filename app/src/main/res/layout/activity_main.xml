@@ -31,7 +31,8 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         tools:layout_editor_absoluteY="273dp"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="0dp"
+        />
 
     <ImageView
         android:layout_width="wrap_content"

@@ -68,12 +68,6 @@ public class StudentListFragment extends Fragment {
 
 }
 
-
-
-//
-
-//
-
 //
 //    public void fetchData() {
 //        requests = new ArrayList<BloodRequest>();

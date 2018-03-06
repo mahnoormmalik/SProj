@@ -74,58 +74,59 @@ public class MainActivity extends AppCompatActivity {
                         .withBalancedPowerMode()
                         .build();
 
-        ProximityZone zone1 = proximityObserver.zoneBuilder()
-                .forAttachmentKeyAndValue("floor", "1st")
-                .inCustomRange(1)
-                .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
-                    @Override
-                    public Unit invoke(ProximityAttachment attachment) {
-                        Toast.makeText(MainActivity.this, "bluetooth beacon detected",
-                                Toast.LENGTH_SHORT).show();
-                        Log.d("app", "Welcome to the 1st floor");
-                        return null;
-                    }
-                })
-                .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
-                    @Override
-                    public Unit invoke(ProximityAttachment attachment) {
-                        Log.d("app", "Bye bye, come visit us again on the 1st floor");
-                        Toast.makeText(MainActivity.this, "bluetooth beacon left",
-                                Toast.LENGTH_SHORT).show();
-                        return null;
-                    }
-                })
-                .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
-                    @Override
-                    public Unit invoke(List<? extends ProximityAttachment> proximityAttachments) {
-                            /* Do something here */
-                        return null;
-                    }
-                })
-                .create();
-        ProximityObserver.Handler observationHandler =
-                proximityObserver
-                        .addProximityZone(zone1)
-                        .start();
+//        ProximityZone zone1 = proximityObserver.zoneBuilder()
+//                .forAttachmentKeyAndValue("floor", "1st")
+//                .inCustomRange(1)
+//                .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
+//                    @Override
+//                    public Unit invoke(ProximityAttachment attachment) {
+//                        Toast.makeText(MainActivity.this, "bluetooth beacon detected",
+//                                Toast.LENGTH_SHORT).show();
+//                        Log.d("app", "Welcome to the 1st floor");
+//                        return null;
+//                    }
+//                })
+//                .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
+//                    @Override
+//                    public Unit invoke(ProximityAttachment attachment) {
+//                        Log.d("app", "Bye bye, come visit us again on the 1st floor");
+//                        Toast.makeText(MainActivity.this, "bluetooth beacon left",
+//                                Toast.LENGTH_SHORT).show();
+//                        return null;
+//                    }
+//                })
+//                .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
+//                    @Override
+//                    public Unit invoke(List<? extends ProximityAttachment> proximityAttachments) {
+//                            /* Do something here */
+//                        return null;
+//                    }
+//                })
+//                .create();
+//        ProximityObserver.Handler observationHandler =
+//                proximityObserver
+//                        .addProximityZone(zone1)
+//                        .start();
 //        this.proximityObserver.addProximityZone(zone1);
 
+        // Mint beacon
         ProximityZone mint = proximityObserver.zoneBuilder()
-                .forAttachmentKeyAndValue("desk", "mint")
+                .forAttachmentKeyAndValue("area", "mint")
                 .inCustomRange(1)
                 .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
-                        Toast.makeText(MainActivity.this, "Welcome to blueberry desk",
+                        Toast.makeText(MainActivity.this, "Welcome to mint area",
                                 Toast.LENGTH_SHORT).show();
-                        Log.d("app", "Welcome to blueberry desk");
+                        Log.d("app", "Welcome to mint area");
                         return null;
                     }
                 })
                 .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
-                        Log.d("app", "Bye bye, come visit us again on the blueberry desk");
-                        Toast.makeText(MainActivity.this, "Bye bye from blueberry desk",
+                        Log.d("app", "Bye bye, come visit us again on the mint area");
+                        Toast.makeText(MainActivity.this, "Bye bye from mint area",
                                 Toast.LENGTH_SHORT).show();
                         return null;
                     }
@@ -141,6 +142,74 @@ public class MainActivity extends AppCompatActivity {
         ProximityObserver.Handler observationHandler1 =
                 proximityObserver
                         .addProximityZone(mint)
+                        .start();
+        // Ice beacon
+        ProximityZone ice = proximityObserver.zoneBuilder()
+                .forAttachmentKeyAndValue("area", "ice")
+                .inCustomRange(2)
+                .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Toast.makeText(MainActivity.this, "Welcome to ice area",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("app", "Welcome to ice area");
+                        return null;
+                    }
+                })
+                .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Log.d("app", "Bye bye, come visit us again on the ice area");
+                        Toast.makeText(MainActivity.this, "Bye bye from ice area",
+                                Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+                })
+                .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
+                    @Override
+                    public Unit invoke(List<? extends ProximityAttachment> proximityAttachments) {
+                            /* Do something here */
+                        return null;
+                    }
+                })
+                .create();
+        ProximityObserver.Handler observationHandler2 =
+                proximityObserver
+                        .addProximityZone(ice)
+                        .start();
+        // Blueberry beacon
+        ProximityZone blueberry = proximityObserver.zoneBuilder()
+                .forAttachmentKeyAndValue("area", "blueberry")
+                .inCustomRange(2)
+                .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Toast.makeText(MainActivity.this, "Welcome to blueberry area",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("app", "Welcome to blueberry area");
+                        return null;
+                    }
+                })
+                .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Log.d("app", "Bye bye, come visit us again on the blueberry area");
+                        Toast.makeText(MainActivity.this, "Bye bye from blueberry area",
+                                Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+                })
+                .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
+                    @Override
+                    public Unit invoke(List<? extends ProximityAttachment> proximityAttachments) {
+                            /* Do something here */
+                        return null;
+                    }
+                })
+                .create();
+        ProximityObserver.Handler observationHandler3 =
+                proximityObserver
+                        .addProximityZone(blueberry)
                         .start();
 
         RequirementsWizardFactory

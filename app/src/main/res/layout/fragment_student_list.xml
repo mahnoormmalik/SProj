@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="56dp"
-    tools:context="com.example.sproj.sproj.StudentListFragment">
+    tools:context="com.example.sproj.sproj.StudentListFragment"
+    tools:ignore="NewApi">
 
 
     <!-- A RecyclerView with some commonly used attributes -->
