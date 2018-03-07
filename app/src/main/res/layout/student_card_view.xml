@@ -63,13 +63,13 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/when_label"
+                    android:id="@+id/p_age_label"
                     android:layout_weight="1"
-                    android:text="Age:  "/>
+                    android:text="Physical Age:  "/>
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/time"
+                    android:id="@+id/p_age"
                     android:layout_weight="0"
                     android:text="5 years"
                     android:textStyle="normal|bold" />
@@ -78,19 +78,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:id="@+id/location_horizontal">
+                android:id="@+id/mental_age_horizontal">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/location_label"
+                    android:id="@+id/mental_age_label"
                     android:layout_weight="1"
-                    android:text="Category:  "/>
+                    android:text="Mental Age:  "/>
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/location"
+                    android:id="@+id/mental_age"
                     android:layout_weight="0"
-                    android:text="Autistic"
+                    android:text="3 years"
                     android:textStyle="normal|bold" />
             </android.support.v7.widget.LinearLayoutCompat>
         </android.support.v7.widget.LinearLayoutCompat>

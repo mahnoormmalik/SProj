@@ -7,22 +7,24 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.sproj.sproj.m_Model.Students;
+import com.example.sproj.sproj.m_UI.MyStudentDataAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-//        import com.jexapps.bloodhub.m_Model.BloodRequest;
-//        import com.jexapps.bloodhub.m_UI.RequestListDataAdapter;
-//
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import static android.content.ContentValues.TAG;
 
 public class StudentListFragment extends Fragment {
 
@@ -51,19 +53,39 @@ public class StudentListFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //mRecyclerView.addItemDecoration(new RecycleMarginDecoration(getActivity()));
-
+//        mRecyclerView.addItemDecoration(new RecycleMarginDecoration(getActivity()));
         //mAdapter = new RequestListDataAdapter(students, keys, getContext());
+        mAdapter = new MyStudentDataAdapter(fetchData());
         mRecyclerView.setAdapter(mAdapter);
         return rootView;
     }
 
     //Getting data from database
-    public void fetchData() {
+    public ArrayList<Students> fetchData() {
         students = new ArrayList<Students>();
-        keys = new ArrayList<String>();
+        ValueEventListener studentsListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                for(DataSnapshot child: dataSnapshot.getChildren()){
+                    Students student = child.getValue(Students.class);
+                    students.add(student);
+                }
+                mAdapter.notifyDataSetChanged();
+                // ...
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        db.addValueEventListener(studentsListener);
+        return students;
     }
+
 
 
 }
