@@ -36,7 +36,6 @@ public class MyStudentDataAdapter extends RecyclerView.Adapter<MyStudentDataAdap
         }
         @Override
         public void onClick(View view){
-//            processClick(mID);
 
 
         }
