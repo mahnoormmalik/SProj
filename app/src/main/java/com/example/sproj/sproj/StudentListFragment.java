@@ -69,7 +69,7 @@ public class StudentListFragment extends Fragment {
                 // Get Post object and use the values to update the UI
                 for(DataSnapshot child: dataSnapshot.getChildren()){
                     Students student = child.getValue(Students.class);
-                    student.id = dataSnapshot.getKey();
+                    student.id = child.getKey();
                     students.add(student);
                 }
                 mAdapter.notifyDataSetChanged();
