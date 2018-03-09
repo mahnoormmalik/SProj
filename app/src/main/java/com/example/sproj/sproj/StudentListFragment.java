@@ -69,6 +69,7 @@ public class StudentListFragment extends Fragment {
                 // Get Post object and use the values to update the UI
                 for(DataSnapshot child: dataSnapshot.getChildren()){
                     Students student = child.getValue(Students.class);
+                    student.id = dataSnapshot.getKey();
                     students.add(student);
                 }
                 mAdapter.notifyDataSetChanged();
@@ -85,75 +86,4 @@ public class StudentListFragment extends Fragment {
         db.addValueEventListener(studentsListener);
         return students;
     }
-
-
-
 }
-
-//
-//    public void fetchData() {
-//        requests = new ArrayList<BloodRequest>();
-//        keys = new ArrayList<String>();
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.HOUR_OF_DAY, 0);
-//        cal.set(Calendar.MINUTE, 0);
-//        cal.set(Calendar.SECOND, 0);
-//        cal.set(Calendar.MILLISECOND, 0);
-//        Date startDate = cal.getTime();
-////        Date endDate = new Date();
-//        db.orderByChild("date").startAt(startDate.getTime()).limitToFirst(15).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot child: dataSnapshot.getChildren()) {
-//                    BloodRequest request = child.getValue(BloodRequest.class);
-//                    requests.add(request);
-//                    keys.add(child.getKey());
-//                }
-//                mAdapter.notifyDataSetChanged();
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//            }
-//        });
-//        return;
-//    }
-//
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onRequestListFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     * <p>
-//     * See the Android Training lesson <a href=
-//     * "http://developer.android.com/training/basics/fragments/communicating.html"
-//     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onRequestListFragmentInteraction(Uri uri);
-//    }
-

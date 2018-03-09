@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 public class Students {
 
-    public String username, m_age, p_age, iq, firstName, lastName;
+    public String username, m_age, p_age, iq, firstName, lastName, id;
 
     public Students() {
         // Default constructor required for calls to DataSnapshot.getValue(BloodRequest.class)
