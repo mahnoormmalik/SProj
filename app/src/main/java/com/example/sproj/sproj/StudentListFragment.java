@@ -46,7 +46,7 @@ public class StudentListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         db = FirebaseDatabase.getInstance().getReference().child("students");
-        fetchData();
+        //fetchData();
         View rootView = inflater.inflate(R.layout.fragment_student_list, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.request_list_recycler_view);
         mRecyclerView.setHasFixedSize(true);
