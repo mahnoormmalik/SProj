@@ -32,12 +32,16 @@ public class MyStudentDataAdapter extends RecyclerView.Adapter<MyStudentDataAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView mName, mPAge, mMAge;
+        String mID;
         protected CardView cv;
         public ViewHolder(View itemView){
             super(itemView);
+            cv = (CardView) itemView.findViewById(R.id.cardView);
             mName = (TextView) itemView.findViewById(R.id.name);
             mPAge = (TextView) itemView.findViewById(R.id.p_age);
             mMAge = (TextView) itemView.findViewById(R.id.mental_age);
+            mID = "";
+            cv.setOnClickListener(this);
         }
         @Override
         public void onClick(View view){
@@ -66,10 +70,10 @@ public class MyStudentDataAdapter extends RecyclerView.Adapter<MyStudentDataAdap
     @Override
     public void onBindViewHolder(MyStudentDataAdapter.ViewHolder holder, int position) {
         Students student = (Students) students.get(position);
+        holder.cv.setTag(student.id);
         holder.mName.setText(student.firstName+" "+student.lastName);
         holder.mPAge.setText(student.p_age);
         holder.mMAge.setText(student.m_age);
-//        holder.mID = "student.id";
     }
     @Override
     public int getItemCount() {

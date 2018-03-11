@@ -32,7 +32,7 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_images_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_display_images, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
 
@@ -45,7 +45,7 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
 //        holder.imageNameTextView.setText(UploadInfo.getImageName());
 
         //Loading image from Glide library.
-        Glide.with(context).load(UploadInfo.imageURL).into(holder.imageView);
+        Glide.with(context).load(UploadInfo.url).into(holder.imageView);
     }
 
     @Override

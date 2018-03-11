@@ -5,11 +5,13 @@ package com.example.sproj.sproj.m_Model;
  */
 
 public class ImageUploadInfo {
-    public String imageName;
-    public String imageURL;
+    public String url;
 
-    public ImageUploadInfo(String name, String url) {
-        this.imageName = name;
-        this.imageURL = url;
+    public ImageUploadInfo(){
+
+    }
+
+    public ImageUploadInfo(String url) {
+        this.url = url;
     }
 }
