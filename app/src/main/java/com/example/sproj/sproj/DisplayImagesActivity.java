@@ -83,8 +83,10 @@ public class DisplayImagesActivity extends AppCompatActivity{
             public void onDataChange(DataSnapshot snapshot) {
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    if(postSnapshot.getValue() != null) {
-//                        Toast.makeText(DisplayImagesActivity.this, postSnapshot.getValue().toString(),
+                    if((postSnapshot.getKey().equals("0"))) { //check if placeholder value is added to database
+
+                    } else {
+//                        Toast.makeText(DisplayImagesActivity.this, postSnapshot.getKey(),
 //                                Toast.LENGTH_SHORT).show();
                         ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
 
