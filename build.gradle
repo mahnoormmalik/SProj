@@ -22,6 +22,7 @@ allprojects {
             url "https://maven.google.com" // Google's Maven repository
         }
         jcenter()
+        google()
     }
 }
 
