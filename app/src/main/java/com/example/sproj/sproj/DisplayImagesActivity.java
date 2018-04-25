@@ -5,8 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.estimote.proximity_sdk.proximity.EstimoteCloudCredentials;
+import com.estimote.proximity_sdk.proximity.ProximityAttachment;
+import com.estimote.proximity_sdk.proximity.ProximityObserver;
+import com.estimote.proximity_sdk.proximity.ProximityObserverBuilder;
+import com.estimote.proximity_sdk.proximity.ProximityZone;
 import com.example.sproj.sproj.m_Model.ImageUploadInfo;
 import com.example.sproj.sproj.m_UI.MyImagesDataAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
 import static java.security.AccessController.getContext;
 
 /**
@@ -27,6 +36,7 @@ import static java.security.AccessController.getContext;
 public class DisplayImagesActivity extends AppCompatActivity{
     // Creating DatabaseReference.
     DatabaseReference databaseReference;
+    private ProximityObserver proximityObserver;
 
     // Creating RecyclerView.
     RecyclerView recyclerView;
@@ -72,46 +82,94 @@ public class DisplayImagesActivity extends AppCompatActivity{
 //
 //        // Showing progress dialog.
 //        progressDialog.show();
+        EstimoteCloudCredentials cloudCredentials = new EstimoteCloudCredentials("aimengaba-gmail-com-s-your-2ft","f8176d44e4b225178f02cc7f524a6f0f");
+
+        //Proximity Observer
+        proximityObserver =
+                new ProximityObserverBuilder(getApplicationContext(), cloudCredentials)
+                        .withOnErrorAction(new Function1<Throwable, Unit>() {
+                            @Override
+                            public Unit invoke(Throwable throwable) {
+                                Log.e("app", "proximity observer error: " + throwable);
+                                return null;
+                            }
+                        })
+                        .withBalancedPowerMode()
+                        .build();
 
         // Setting up Firebase image upload folder path in databaseReference.
         // The path is already defined in MainActivity.
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("students").child(studentID).child("pics").child("canteen");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("students").child(studentID).child("pics").child("classroom");
+                ProximityZone mint = proximityObserver.zoneBuilder()
+                .forAttachmentKeyAndValue("area", "classroom")
+                .inCustomRange(1)
+                .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Toast.makeText(DisplayImagesActivity.this, "Welcome to blueberry desk",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("app", "Welcome to blueberry desk");
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot snapshot) {
 
-        // Adding Add Value Event Listener to databaseReference.
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
+                                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                    if((postSnapshot.getKey().equals("0"))) { //check if placeholder value is added to database
 
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    if((postSnapshot.getKey().equals("0"))) { //check if placeholder value is added to database
-
-                    } else {
+                                    } else {
 //                        Toast.makeText(DisplayImagesActivity.this, postSnapshot.getKey(),
 //                                Toast.LENGTH_SHORT).show();
-                        ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+                                        ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
 
-                        list.add(imageUploadInfo);
+                                        list.add(imageUploadInfo);
+                                    }
+
+                                }
+
+
+                                adapter = new MyImagesDataAdapter(getApplicationContext(), list);
+
+                                recyclerView.setAdapter(adapter);
+
+                                // Hiding the progress dialog.
+//                progressDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                                // Hiding the progress dialog.
+//                progressDialog.dismiss();
+
+                            }
+                        });
+                        return null;
                     }
+                })
+                .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Log.d("app", "Bye bye, come visit us again on the blueberry desk");
+                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from blueberry desk",
+                                Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+                })
+                .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
+                    @Override
+                    public Unit invoke(List<? extends ProximityAttachment> proximityAttachments) {
+                            /* Do something here */
+                        return null;
+                    }
+                })
+                .create();
+        ProximityObserver.Handler observationHandler1 =
+                proximityObserver
+                        .addProximityZone(mint)
+                        .start();
 
-                }
+        // Adding Add Value Event Listener to databaseReference.
 
-
-                adapter = new MyImagesDataAdapter(getApplicationContext(), list);
-
-                recyclerView.setAdapter(adapter);
-
-                // Hiding the progress dialog.
-//                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-                // Hiding the progress dialog.
-//                progressDialog.dismiss();
-
-            }
-        });
 
     }
 }
