@@ -48,7 +48,9 @@ public class DisplayImagesActivity extends AppCompatActivity{
     ProgressDialog progressDialog;
 
     // Creating List of ImageUploadInfo class.
-    List<ImageUploadInfo> list = new ArrayList<>();
+    List<ImageUploadInfo> listClassroom = new ArrayList<>();
+    List<ImageUploadInfo> listPlayGround = new ArrayList<>();
+    List<ImageUploadInfo> listLivingSkills = new ArrayList<>();
 
     String studentID;
 
@@ -100,7 +102,36 @@ public class DisplayImagesActivity extends AppCompatActivity{
         // Setting up Firebase image upload folder path in databaseReference.
         // The path is already defined in MainActivity.
         databaseReference = FirebaseDatabase.getInstance().getReference().child("students").child(studentID).child("pics").child("classroom");
-                ProximityZone mint = proximityObserver.zoneBuilder()
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    if((postSnapshot.getKey().equals("0"))) { //check if placeholder value is added to database
+
+                    } else {
+//                        Toast.makeText(DisplayImagesActivity.this, postSnapshot.getKey(),
+//                                Toast.LENGTH_SHORT).show();
+                        ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+
+                        listClassroom.add(imageUploadInfo);
+                    }
+
+                }
+
+                // Hiding the progress dialog.
+//                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                // Hiding the progress dialog.
+//                progressDialog.dismiss();
+
+            }
+        });
+        ProximityZone classRoom = proximityObserver.zoneBuilder()
                 .forAttachmentKeyAndValue("area", "classroom")
                 .inCustomRange(1)
                 .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
@@ -109,40 +140,9 @@ public class DisplayImagesActivity extends AppCompatActivity{
                         Toast.makeText(DisplayImagesActivity.this, "Welcome to blueberry desk",
                                 Toast.LENGTH_SHORT).show();
                         Log.d("app", "Welcome to blueberry desk");
-                        databaseReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                        adapter = new MyImagesDataAdapter(getApplicationContext(), listClassroom);
 
-                                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                    if((postSnapshot.getKey().equals("0"))) { //check if placeholder value is added to database
-
-                                    } else {
-//                        Toast.makeText(DisplayImagesActivity.this, postSnapshot.getKey(),
-//                                Toast.LENGTH_SHORT).show();
-                                        ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
-
-                                        list.add(imageUploadInfo);
-                                    }
-
-                                }
-
-
-                                adapter = new MyImagesDataAdapter(getApplicationContext(), list);
-
-                                recyclerView.setAdapter(adapter);
-
-                                // Hiding the progress dialog.
-//                progressDialog.dismiss();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                                // Hiding the progress dialog.
-//                progressDialog.dismiss();
-
-                            }
-                        });
+                        recyclerView.setAdapter(adapter);
                         return null;
                     }
                 })
@@ -165,7 +165,79 @@ public class DisplayImagesActivity extends AppCompatActivity{
                 .create();
         ProximityObserver.Handler observationHandler1 =
                 proximityObserver
-                        .addProximityZone(mint)
+                        .addProximityZone(classRoom)
+                        .start();
+        ProximityZone playground = proximityObserver.zoneBuilder()
+                .forAttachmentKeyAndValue("area", "classroom")
+                .inCustomRange(1)
+                .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Toast.makeText(DisplayImagesActivity.this, "Welcome to blueberry desk",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("app", "Welcome to blueberry desk");
+                        adapter = new MyImagesDataAdapter(getApplicationContext(), listPlayGround);
+
+                        recyclerView.setAdapter(adapter);
+                        return null;
+                    }
+                })
+                .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Log.d("app", "Bye bye, come visit us again on the blueberry desk");
+                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from blueberry desk",
+                                Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+                })
+                .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
+                    @Override
+                    public Unit invoke(List<? extends ProximityAttachment> proximityAttachments) {
+                            /* Do something here */
+                        return null;
+                    }
+                })
+                .create();
+        ProximityObserver.Handler observationHandler1playground =
+                proximityObserver
+                        .addProximityZone(playground)
+                        .start();
+        ProximityZone livingSkills = proximityObserver.zoneBuilder()
+                .forAttachmentKeyAndValue("area", "classroom")
+                .inCustomRange(1)
+                .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Toast.makeText(DisplayImagesActivity.this, "Welcome to blueberry desk",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("app", "Welcome to blueberry desk");
+                        adapter = new MyImagesDataAdapter(getApplicationContext(), listLivingSkills);
+
+                        recyclerView.setAdapter(adapter);
+                        return null;
+                    }
+                })
+                .withOnExitAction(new Function1<ProximityAttachment, Unit>() {
+                    @Override
+                    public Unit invoke(ProximityAttachment attachment) {
+                        Log.d("app", "Bye bye, come visit us again on the blueberry desk");
+                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from blueberry desk",
+                                Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+                })
+                .withOnChangeAction(new Function1<List<? extends ProximityAttachment>, Unit>() {
+                    @Override
+                    public Unit invoke(List<? extends ProximityAttachment> proximityAttachments) {
+                            /* Do something here */
+                        return null;
+                    }
+                })
+                .create();
+        ProximityObserver.Handler observationHandler1liningskills =
+                proximityObserver
+                        .addProximityZone(livingSkills)
                         .start();
 
         // Adding Add Value Event Listener to databaseReference.
