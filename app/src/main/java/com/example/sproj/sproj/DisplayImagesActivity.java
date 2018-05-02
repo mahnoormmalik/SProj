@@ -168,12 +168,12 @@ public class DisplayImagesActivity extends AppCompatActivity{
                         .addProximityZone(classRoom)
                         .start();
         ProximityZone playground = proximityObserver.zoneBuilder()
-                .forAttachmentKeyAndValue("area", "classroom")
+                .forAttachmentKeyAndValue("area", "playground")
                 .inCustomRange(1)
                 .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
-                        Toast.makeText(DisplayImagesActivity.this, "Welcome to blueberry desk",
+                        Toast.makeText(DisplayImagesActivity.this, "Welcome to Ice desk",
                                 Toast.LENGTH_SHORT).show();
                         Log.d("app", "Welcome to blueberry desk");
                         adapter = new MyImagesDataAdapter(getApplicationContext(), listPlayGround);
@@ -186,7 +186,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
                         Log.d("app", "Bye bye, come visit us again on the blueberry desk");
-                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from blueberry desk",
+                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from Ice desk",
                                 Toast.LENGTH_SHORT).show();
                         return null;
                     }
@@ -204,12 +204,12 @@ public class DisplayImagesActivity extends AppCompatActivity{
                         .addProximityZone(playground)
                         .start();
         ProximityZone livingSkills = proximityObserver.zoneBuilder()
-                .forAttachmentKeyAndValue("area", "classroom")
+                .forAttachmentKeyAndValue("area", "livingskills")
                 .inCustomRange(1)
                 .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
-                        Toast.makeText(DisplayImagesActivity.this, "Welcome to blueberry desk",
+                        Toast.makeText(DisplayImagesActivity.this, "Welcome to mint desk",
                                 Toast.LENGTH_SHORT).show();
                         Log.d("app", "Welcome to blueberry desk");
                         adapter = new MyImagesDataAdapter(getApplicationContext(), listLivingSkills);
@@ -222,7 +222,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
                         Log.d("app", "Bye bye, come visit us again on the blueberry desk");
-                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from blueberry desk",
+                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from mint desk",
                                 Toast.LENGTH_SHORT).show();
                         return null;
                     }

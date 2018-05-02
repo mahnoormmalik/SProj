@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://D:\Spring18\Sproj\sproj\SProj.iml" filepath="D:\Spring18\Sproj\sproj\SProj.iml" />
-      <module fileurl="file://D:\Spring18\Sproj\sproj\SProj-master.iml" filepath="D:\Spring18\Sproj\sproj\SProj-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SProj.iml" filepath="$PROJECT_DIR$/SProj.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\Spring18\Sproj\sproj\app\app.iml" filepath="D:\Spring18\Sproj\sproj\app\app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sproj.iml" filepath="$PROJECT_DIR$/sproj.iml" />
     </modules>
   </component>
 </project>

@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
+import com.example.sproj.sproj.DisplayImagesActivity;
 import com.example.sproj.sproj.R;
 import com.example.sproj.sproj.m_Model.ImageUploadInfo;
 
@@ -43,7 +46,8 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
         ImageUploadInfo UploadInfo = MainImageUploadInfoList.get(position);
 
 //        holder.imageNameTextView.setText(UploadInfo.getImageName());
-
+        Toast.makeText(context, "Getting picture",
+                Toast.LENGTH_SHORT).show();
         //Loading image from Glide library.
         Glide.with(context).load(UploadInfo.url).into(holder.imageView);
     }
