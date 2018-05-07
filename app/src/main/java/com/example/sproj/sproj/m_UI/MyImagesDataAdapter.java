@@ -1,6 +1,9 @@
 package com.example.sproj.sproj.m_UI;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +16,16 @@ import com.bumptech.glide.Glide;
 import com.example.sproj.sproj.DisplayImagesActivity;
 import com.example.sproj.sproj.R;
 import com.example.sproj.sproj.m_Model.ImageUploadInfo;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -23,6 +35,11 @@ import java.util.List;
 public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapter.ViewHolder> {
     Context context;
     List<ImageUploadInfo> MainImageUploadInfoList;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
+    File localFile;
+    Uri audURI;
+//    public final InputStream openStream() throws IOException;
 
     public MyImagesDataAdapter(Context context, List<ImageUploadInfo> TempList) {
 
@@ -44,12 +61,43 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ImageUploadInfo UploadInfo = MainImageUploadInfoList.get(position);
+        StorageReference audRef = storageRef.child(UploadInfo.audURL);
+        String file[] = UploadInfo.audURL.split("\\.");
+        try{
+            File outputDir = context.getCacheDir();
+            localFile = File.createTempFile(file[0], file[1],outputDir);
+            audRef.child(UploadInfo.audURL).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    audURI = uri;
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
+                }
+            });
+//            audRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//
+//                }
+//            });
+
+        }
+        catch(IOException e){
+
+        }
 //        holder.imageNameTextView.setText(UploadInfo.getImageName());
         Toast.makeText(context, "Getting picture",
                 Toast.LENGTH_SHORT).show();
         //Loading image from Glide library.
-        Glide.with(context).load(UploadInfo.url).into(holder.imageView);
+        Glide.with(context).load(UploadInfo.imgURL).into(holder.imageView);
     }
 
     @Override
@@ -57,17 +105,23 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
 
         return MainImageUploadInfoList.size();
     }
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView imageView;
 //        public TextView imageNameTextView;
+        File outputDir = context.getCacheDir();
 
+        final MediaPlayer MP = MediaPlayer.create(context, audURI);
         public ViewHolder(View itemView) {
             super(itemView);
 
             imageView = (ImageView) itemView.findViewById(R.id.org_image);
 
 //            imageNameTextView = (TextView) itemView.findViewById(R.id.ImageNameTextView);
+        }
+        @Override
+        public void onClick(View view){
+            MP.start();
         }
     }
 }
