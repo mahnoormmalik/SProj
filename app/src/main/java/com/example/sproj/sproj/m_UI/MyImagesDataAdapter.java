@@ -61,22 +61,23 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ImageUploadInfo UploadInfo = MainImageUploadInfoList.get(position);
-        StorageReference audRef = storageRef.child(UploadInfo.audURL);
-        String file[] = UploadInfo.audURL.split("\\.");
-        try{
-            File outputDir = context.getCacheDir();
-            localFile = File.createTempFile(file[0], file[1],outputDir);
-            audRef.child(UploadInfo.audURL).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    audURI = uri;
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                }
-            });
+//        StorageReference audRef = storageRef.child(UploadInfo.audURL);
+//        String file[] = UploadInfo.audURL.split("\\.");
+//        try{
+//            File outputDir = context.getCacheDir();
+//            localFile = File.createTempFile(file[0], file[1],outputDir);
+//            audRef.child(UploadInfo.audURL).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    audURI = uri;
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Toast.makeText(context, "Error downloading audio",
+//                            Toast.LENGTH_SHORT).show();
+//                }
+//            });
 //            audRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
 //                @Override
 //                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -89,10 +90,10 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
 //                }
 //            });
 
-        }
-        catch(IOException e){
-
-        }
+//        }
+//        catch(IOException e){
+//
+//        }
 //        holder.imageNameTextView.setText(UploadInfo.getImageName());
         Toast.makeText(context, "Getting picture",
                 Toast.LENGTH_SHORT).show();
@@ -111,7 +112,7 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
 //        public TextView imageNameTextView;
         File outputDir = context.getCacheDir();
 
-        final MediaPlayer MP = MediaPlayer.create(context, audURI);
+//        final MediaPlayer MP = MediaPlayer.create(context, audURI);
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -121,7 +122,7 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
         }
         @Override
         public void onClick(View view){
-            MP.start();
+//            MP.start();
         }
     }
 }
