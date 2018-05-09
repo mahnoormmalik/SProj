@@ -121,6 +121,8 @@ public class DisplayImagesActivity extends AppCompatActivity{
                                 return null;
                             }
                         })
+                        .withEstimoteSecureMonitoringDisabled()
+                        .withTelemetryReportingDisabled()
                         .withBalancedPowerMode()
                         .build();
 
@@ -135,8 +137,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                     if((postSnapshot.getKey().equals("0"))) { //check if placeholder value is added to database
 
                     } else {
-//                        Toast.makeText(DisplayImagesActivity.this, postSnapshot.getKey(),
-//                                Toast.LENGTH_SHORT).show();
+
                         ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
 
                         listClassroom.add(imageUploadInfo);
@@ -160,7 +161,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
 
 
 
-        livingSkillsReference = FirebaseDatabase.getInstance().getReference().child("students").child(studentID).child("pics").child("livingskills");
+        livingSkillsReference = FirebaseDatabase.getInstance().getReference().child("students").child(studentID).child("upload").child("livingskills");
 
         livingSkillsReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -170,8 +171,6 @@ public class DisplayImagesActivity extends AppCompatActivity{
                     if((postSnapshot.getKey().equals("0"))) { //check if placeholder value is added to database
 
                     } else {
-//                        Toast.makeText(DisplayImagesActivity.this, postSnapshot.getKey(),
-//                                Toast.LENGTH_SHORT).show();
                         ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
 
                         listLivingSkills.add(imageUploadInfo);
@@ -192,7 +191,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
 
             }
         });
-        gymReference = FirebaseDatabase.getInstance().getReference().child("students").child(studentID).child("pics").child("gym");
+        gymReference = FirebaseDatabase.getInstance().getReference().child("students").child(studentID).child("upload").child("gym");
 
         gymReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -202,8 +201,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                     if((postSnapshot.getKey().equals("0"))) { //check if placeholder value is added to database
 
                     } else {
-//                        Toast.makeText(DisplayImagesActivity.this, postSnapshot.getKey(),
-//                                Toast.LENGTH_SHORT).show();
+
                         ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
 
                         listPlayGround.add(imageUploadInfo);
@@ -230,8 +228,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                 .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
-//                        Toast.makeText(DisplayImagesActivity.this, "Welcome to blueberry desk",
-//                                Toast.LENGTH_SHORT).show();
+
                         Log.d("app", "Welcome to blueberry desk");
                         adapter = new MyImagesDataAdapter(getApplicationContext(), listClassroom);
                         title.setText("Classroom");
@@ -243,8 +240,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
                         Log.d("app", "Bye bye, come visit us again on the blueberry desk");
-//                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from blueberry desk",
-//                                Toast.LENGTH_SHORT).show();
+
                         adapter = new MyImagesDataAdapter(getApplicationContext(), EmptyArr);
                         recyclerView.setAdapter(adapter);
                         return null;
@@ -268,8 +264,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                 .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
-//                        Toast.makeText(DisplayImagesActivity.this, "Welcome to Ice desk",
-//                                Toast.LENGTH_SHORT).show();
+
                         Log.d("app", "Welcome to blueberry desk");
                         adapter = new MyImagesDataAdapter(getApplicationContext(), listPlayGround);
                         title.setText("Gym");
@@ -281,8 +276,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
                         Log.d("app", "Bye bye, come visit us again on the blueberry desk");
-//                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from Ice desk",
-//                                Toast.LENGTH_SHORT).show();
+
                         adapter = new MyImagesDataAdapter(getApplicationContext(), EmptyArr);
                         recyclerView.setAdapter(adapter);
                         return null;
@@ -306,8 +300,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                 .withOnEnterAction(new Function1<ProximityAttachment, Unit>() {
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
-//                        Toast.makeText(DisplayImagesActivity.this, "Welcome to mint desk",
-//                                Toast.LENGTH_SHORT).show();
+
                         Log.d("app", "Welcome to blueberry desk");
                         adapter = new MyImagesDataAdapter(getApplicationContext(), listLivingSkills);
                         title.setText("Living Skills");
@@ -320,8 +313,7 @@ public class DisplayImagesActivity extends AppCompatActivity{
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
                         Log.d("app", "Bye bye, come visit us again on the blueberry desk");
-//                        Toast.makeText(DisplayImagesActivity.this, "Bye bye from mint desk",
-//                                Toast.LENGTH_SHORT).show();
+
                         adapter = new MyImagesDataAdapter(getApplicationContext(), EmptyArr);
                         recyclerView.setAdapter(adapter);
                         return null;

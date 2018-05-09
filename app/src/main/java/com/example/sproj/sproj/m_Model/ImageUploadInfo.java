@@ -5,14 +5,14 @@ package com.example.sproj.sproj.m_Model;
  */
 
 public class ImageUploadInfo {
-    public String imgURL, audURL;
+    public String imgURL, audioURL;
 
     public ImageUploadInfo(){
 
     }
 
-    public ImageUploadInfo(String Imgurl, String Audurl) {
+    public ImageUploadInfo(String Audurl, String Imgurl) {
         this.imgURL = Imgurl;
-        this.audURL = Audurl;
+        this.audioURL = Audurl;
     }
 }

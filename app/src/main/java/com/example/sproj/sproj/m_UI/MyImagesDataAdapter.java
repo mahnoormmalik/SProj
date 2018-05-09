@@ -1,9 +1,11 @@
 package com.example.sproj.sproj.m_UI;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,10 +39,8 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
     List<ImageUploadInfo> MainImageUploadInfoList;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
-    File localFile;
-    Uri audURI;
-//    public final InputStream openStream() throws IOException;
-
+    ImageUploadInfo uploadInfo;
+    String audiourl;
     public MyImagesDataAdapter(Context context, List<ImageUploadInfo> TempList) {
 
         this.MainImageUploadInfoList = TempList;
@@ -60,13 +60,15 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ImageUploadInfo UploadInfo = MainImageUploadInfoList.get(position);
-//        StorageReference audRef = storageRef.child(UploadInfo.audURL);
+        uploadInfo = MainImageUploadInfoList.get(position);
+
+        audiourl = uploadInfo.audioURL;
+        holder.cv.setTag(uploadInfo.audioURL);
 //        String file[] = UploadInfo.audURL.split("\\.");
 //        try{
 //            File outputDir = context.getCacheDir();
 //            localFile = File.createTempFile(file[0], file[1],outputDir);
-//            audRef.child(UploadInfo.audURL).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            audRef.child(uploadInfo.audioURL).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 //                @Override
 //                public void onSuccess(Uri uri) {
 //                    audURI = uri;
@@ -74,8 +76,7 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
 //            }).addOnFailureListener(new OnFailureListener() {
 //                @Override
 //                public void onFailure(@NonNull Exception e) {
-//                    Toast.makeText(context, "Error downloading audio",
-//                            Toast.LENGTH_SHORT).show();
+
 //                }
 //            });
 //            audRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -95,10 +96,10 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
 //
 //        }
 //        holder.imageNameTextView.setText(UploadInfo.getImageName());
-        Toast.makeText(context, "Getting picture",
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "Getting picture",
+//                Toast.LENGTH_SHORT).show();
         //Loading image from Glide library.
-        Glide.with(context).load(UploadInfo.imgURL).into(holder.imageView);
+        Glide.with(context).load(uploadInfo.imgURL).into(holder.imageView);
     }
 
     @Override
@@ -109,20 +110,31 @@ public class MyImagesDataAdapter extends RecyclerView.Adapter<MyImagesDataAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView imageView;
+
 //        public TextView imageNameTextView;
         File outputDir = context.getCacheDir();
-
+        protected  CardView cv;
 //        final MediaPlayer MP = MediaPlayer.create(context, audURI);
         public ViewHolder(View itemView) {
             super(itemView);
 
             imageView = (ImageView) itemView.findViewById(R.id.org_image);
-
+            cv = (CardView) itemView.findViewById(R.id.cardView);
+            cv.setOnClickListener(this);
 //            imageNameTextView = (TextView) itemView.findViewById(R.id.ImageNameTextView);
         }
         @Override
         public void onClick(View view){
 //            MP.start();
+            try {
+                MediaPlayer player = new MediaPlayer();
+                player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                player.setDataSource((String) view.getTag());
+                player.prepare();
+                player.start();
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
         }
     }
 }
